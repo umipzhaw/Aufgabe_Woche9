@@ -28,17 +28,19 @@ services:
      volumes:
        - ./data:/home/jovyan/work
 
-   nodeapp:
+   flaskapp:
      depends_on:
        - db
-     image: node:14
+     image: python:3.8-slim
      volumes:
-       - ./nodeapp:/usr/src/app
+       - ./flaskapp:/usr/src/app
      working_dir: /usr/src/app
-     command: npm start
+     command: flask run --host=0.0.0.0
      ports:
-       - "3000:3000"
+       - "5000:5000"
      environment:
+       FLASK_APP: app.py
+       FLASK_ENV: development
        DATABASE_HOST: db
        DATABASE_USER: jupyter
        DATABASE_PASSWORD: jupyterpass
