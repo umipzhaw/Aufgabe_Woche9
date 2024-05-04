@@ -28,5 +28,21 @@ services:
      volumes:
        - ./data:/home/jovyan/work
 
+   nodeapp:
+     depends_on:
+       - db
+     image: node:14
+     volumes:
+       - ./nodeapp:/usr/src/app
+     working_dir: /usr/src/app
+     command: npm start
+     ports:
+       - "3000:3000"
+     environment:
+       DATABASE_HOST: db
+       DATABASE_USER: jupyter
+       DATABASE_PASSWORD: jupyterpass
+       DATABASE_NAME: jupyterdb
+
 volumes:
     db_data: {}
