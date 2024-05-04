@@ -28,23 +28,17 @@ services:
      volumes:
        - ./data:/home/jovyan/work
 
-flaskapp:
-  depends_on:
-    - db
-  image: python:3.8-slim
-  volumes:
-    - ./flaskapp:/usr/src/app
-  working_dir: /usr/src/app
-  command: >
-    sh -c "pip install flask && 
-           flask run --host=0.0.0.0"
-  ports:
-    - "5000:5000"
-  environment:
-    FLASK_APP: app.py
-    FLASK_ENV: development
-    DATABASE_HOST: db
-    DATABASE_USER: jupyter
-    DATABASE_PASSWORD: jupyterpass
-    DATABASE_NAME: jupyterdb
- 
+   mongodb:
+     image: mongo:latest
+     restart: always
+     environment:
+       MONGO_INITDB_ROOT_USERNAME: mongouser
+       MONGO_INITDB_ROOT_PASSWORD: mongopass
+     ports:
+       - "27017:27017"
+     volumes:
+       - mongo_data:/data/db
+
+volumes:
+    db_data: {}
+    mongo_data: {}
